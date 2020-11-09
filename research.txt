@@ -1,0 +1,10 @@
+http://markdunne.github.io/2016/04/10/The-London-Tube-as-a-Graph/
+https://github.com/nicola/tubemaps
+https://en.wikipedia.org/wiki/Shortest_path_problem#Algorithms
+http://www.algomation.com/algorithm/dijkstra-graph-shortest-path-london-underground
+https://www.101computing.net/london-underground-journey-planner/
+
+- colour in terminal
+- Walking time at stations
+- create Set struct
+- create Queue struct
