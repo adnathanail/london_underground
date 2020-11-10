@@ -2,7 +2,7 @@
 #include <limits.h>
 
 #include "data/data.h"
-#include "data/data_proc.h"
+#include "libs/data_proc.h"
 
 struct queue {
   int items[MAX_STATION_ID];
@@ -26,9 +26,9 @@ char** station_names;
 char** line_names;
 
 int main() {
-  GraphConnection** graph = get_graph_from_connections(CONNECTIONS);
-  station_names = get_station_names_from_stations(STATIONS);
-  line_names = get_line_names_from_lines(LINES);
+  GraphConnection** graph = get_graph_from_connections(CONNECTIONS, NUM_CONNECTIONS, MAX_STATION_ID + 1);
+  station_names = get_station_names_from_stations(STATIONS, MAX_STATION_ID + 1, MAX_NAME_LENGTH);
+  line_names = get_line_names_from_lines(LINES, NUM_LINES + 1, MAX_NAME_LENGTH);
 
   dijkstra(graph, 145, 96);
   // ^ STP to Fulham Broadway
