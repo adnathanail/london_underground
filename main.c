@@ -30,6 +30,61 @@ int main() {
   return 0;
 }
 
+void dijkstra(GraphConnection** graph, int origin, int destination) {
+  // Dijkstra implementation based off https://brilliant.org/wiki/dijkstras-short-path-finder/
+
+  int distances_to_origin[MAX_STATION_ID];
+  for (int i = 0; i < MAX_STATION_ID; i++) {
+    distances_to_origin[i] = INT_MAX;
+  }
+  distances_to_origin[origin] = 0;
+
+  Queue remaining_stations;
+  queue_init(&remaining_stations, MAX_STATION_ID);
+  for (int i = 0; i < MAX_STATION_ID; i++) {
+    remaining_stations.items[i] = i;
+  }
+
+  // Array of arrays of the stations visited in each stations path from the origin
+  PathConnection paths[MAX_STATION_ID][MAX_STATION_ID];
+  for (int i = 0; i < MAX_STATION_ID; i++) {
+    for (int j = 0; j < MAX_STATION_ID; j++) {
+      paths[i][j].station_id = -1;
+      paths[i][j].line = -1;
+    }
+  }
+  paths[origin][0].station_id = origin;  // The origin starts off with a path to itself
+
+  // Dijkstra
+  while (remaining_stations.items[0] != -1) {
+    int v = get_next_closest_node(distances_to_origin, remaining_stations);
+    queue_pop(&remaining_stations, v);
+    for (int u = 0; u < MAX_STATION_ID; u++) {
+      if (graph[v][u].time != -1) {
+        if ((distances_to_origin[v] + graph[v][u].time) < distances_to_origin[u]) {
+          distances_to_origin[u] = distances_to_origin[v] + graph[v][u].time;
+          if (paths[v][0].station_id != -1) {
+            // If v has a path, copy it to u and add u to the end
+            for (int i = 0; i < MAX_STATION_ID; i++) {
+              if (paths[v][i].station_id != -1) {
+                paths[u][i] = paths[v][i];
+              } else if (paths[v][i - 1].station_id != -1) {
+                paths[u][i].station_id = u;
+                paths[u][i].line = graph[v][u].line;
+              } else {
+                paths[u][i].station_id = -1;
+                paths[u][i].line = -1;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  display_results(origin, destination, distances_to_origin, paths);
+}
+
 int get_next_closest_node(const int dist[MAX_STATION_ID], Queue Q) {
   int closest_node = -1;
   int closes_node_distance = INT_MAX;
@@ -61,54 +116,4 @@ void display_results(int origin, int destination, const int *dist, const PathCon
       break;
     }
   }
-}
-
-void dijkstra(GraphConnection** graph, int origin, int destination) {
-  // Dijkstra implementation based off https://brilliant.org/wiki/dijkstras-short-path-finder/
-  int distances_to_origin[MAX_STATION_ID];
-  for (int i = 0; i < MAX_STATION_ID; i++) {
-    distances_to_origin[i] = INT_MAX;
-  }
-  distances_to_origin[origin] = 0;
-
-  Queue remaining_stations;
-  queue_init(&remaining_stations, MAX_STATION_ID);
-  for (int i = 0; i < MAX_STATION_ID; i++) {
-    remaining_stations.items[i] = i;
-  }
-  // Array of arrays of the stations visited in each stations path from the origin
-  PathConnection paths[MAX_STATION_ID][MAX_STATION_ID];
-  for (int i = 0; i < MAX_STATION_ID; i++) {
-    for (int j = 0; j < MAX_STATION_ID; j++) {
-      paths[i][j].station_id = -1;
-      paths[i][j].line = -1;
-    }
-  }
-  paths[origin][0].station_id = origin;
-  // Dijkstra
-  while (remaining_stations.items[0] != -1) {
-    int v = get_next_closest_node(distances_to_origin, remaining_stations);
-    queue_pop(&remaining_stations, v);
-    for (int u = 0; u < MAX_STATION_ID; u++) {
-      if (graph[v][u].time != -1) {
-        if ((distances_to_origin[v] + graph[v][u].time) < distances_to_origin[u]) {
-          distances_to_origin[u] = distances_to_origin[v] + graph[v][u].time;
-          if (paths[v][0].station_id != -1) {
-            for (int i = 0; i < MAX_STATION_ID; i++) {
-              if (paths[v][i].station_id != -1) {  // Copy v to u
-                paths[u][i] = paths[v][i];
-              } else if (paths[v][i - 1].station_id != -1) {  // Add u to the end of it's own path
-                paths[u][i].station_id = u;
-                paths[u][i].line = graph[v][u].line;
-              } else {  // Clear any remnants of old paths
-                paths[u][i].station_id = -1;
-                paths[u][i].line = -1;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  display_results(origin, destination, distances_to_origin, paths);
 }
