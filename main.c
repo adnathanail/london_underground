@@ -26,8 +26,8 @@ int main() {
   stations_map = get_stations_map_from_stations(STATIONS, NUM_STATIONS, MAX_STATION_ID + 1, MAX_NAME_LENGTH);
   line_names = get_line_names_from_lines(LINES, NUM_LINES, MAX_LINE_ID + 1, MAX_NAME_LENGTH);
 
-  int origin = read_int("Enter origin station ID: ");
-  int destination = read_int("Enter destination station ID: ");
+  int origin = get_station("Origin");
+  int destination = get_station("Destination");
 
   dijkstra(origin, destination);
   // STP, Becontree = 145, 21

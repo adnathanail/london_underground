@@ -7,5 +7,6 @@
 
 char* read_string(char* prompt);
 int read_int(char* prompt);
+int get_station(char* designation);
 
 #endif //LONDON_UNDERGROUND_USER_INTERACTION_H

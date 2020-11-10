@@ -11,3 +11,7 @@ https://github.com/nicola/tubemaps
 - colour in terminal
 - Walking time at stations
 - Zone integers?
+- Station search
+- Station codes? http://www.railwaycodes.org.uk/underground/stations.shtm
+- Valgrind
+- Pycharm issues

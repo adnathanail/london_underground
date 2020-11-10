@@ -43,3 +43,14 @@ int read_int(char* prompt) {
   }
   return out;
 }
+
+int get_station(char* designation) {  // Designation is things like origin/destination
+  char* prompt = calloc(sizeof(char), 6 + strlen(designation) + 6 + 13 + 1);
+  strcpy(prompt, "Enter ");
+  strcat(prompt, designation);
+  strcat(prompt, " station ID: ");
+  int station = read_int(prompt);
+
+  free(prompt);
+  return station;
+}
