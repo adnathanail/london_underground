@@ -29,14 +29,14 @@ GraphConnection** get_graph_from_connections(const Connection connections[], int
   return out;
 }
 
-PartialStation** get_stations_map_from_stations(const Station stations[], int station_arr_length, int max_name_length) {
+PartialStation** get_stations_map_from_stations(const Station stations[], int num_stations, int station_arr_length, int max_name_length) {
   PartialStation** out = malloc(station_arr_length * sizeof(PartialStation*));
   for (int i = 0; i < station_arr_length; i++) {
     out[i] = malloc(sizeof(PartialStation));
     out[i]->name = malloc(max_name_length * sizeof(char));
     strcpy(out[i]->name, "");
   }
-  for (int i = 0; i < station_arr_length; i++) {
+  for (int i = 0; i < num_stations; i++) {
     if (stations[i].id > 0) {
       strcpy(out[stations[i].id]->name, stations[i].name);
       out[stations[i].id]->zone = stations[i].zone;

@@ -8,7 +8,7 @@
 // Conversion regex
 //   Replace: ([^,]*),([^,]*),([^,]*),("[^"]*"),(("[^"]*")|(NULL)),([^,]*),([^,]*),([^,]*)\n
 //   With:    { .id = $1, .latitude = $2, .longitude = $3, .name = $4, .zone = $8, .total_lines = $9, .rail = $10 },\n
-const Station STATIONS[MAX_STATION_ID] = {
+const Station STATIONS[NUM_STATIONS] = {
   { .id = 1, .latitude = 51.5028, .longitude = -0.2801, .name = "Acton Town", .zone = 3, .total_lines = 2, .rail = 0 },
   { .id = 2, .latitude = 51.5143, .longitude = -0.0755, .name = "Aldgate", .zone = 1, .total_lines = 2, .rail = 0 },
   { .id = 3, .latitude = 51.5154, .longitude = -0.0726, .name = "Aldgate East", .zone = 1, .total_lines = 2, .rail = 0 },
