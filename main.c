@@ -3,61 +3,55 @@
 #include <limits.h>
 #include "data/data.h"
 
-int get_next_closest_node(int dist[MAX_STATION_ID], int Q[MAX_STATION_ID]) {
+struct queue {
+  int items[MAX_STATION_ID];
+};
+
+typedef struct queue Queue;
+
+int get_next_closest_node(const int dist[MAX_STATION_ID], Queue Q) {
   int closest_node = -1;
   int closes_node_distance = INT_MAX;
   int i = 0;
-  while (Q[i] != -1 && i < MAX_STATION_ID) {
-    if (dist[Q[i]] < closes_node_distance || closest_node == -1) {
-      closest_node = Q[i];
-      closes_node_distance = dist[Q[i]];
+  while (Q.items[i] != -1 && i < MAX_STATION_ID) {
+    if (dist[Q.items[i]] < closes_node_distance || closest_node == -1) {
+      closest_node = Q.items[i];
+      closes_node_distance = dist[Q.items[i]];
     }
     i++;
   }
   return closest_node;
 }
 
-void pop(int queue[], int val) {
+void pop(Queue queue, int val) {
   int shifting = 0;
   for (int i = 0; i < MAX_STATION_ID; i++) {
-    if (queue[i] == val) {
+    if (queue.items[i] == val) {
       shifting = 1;
     }
     if (shifting) {
-      queue[i] = queue[i + 1];
+      queue.items[i] = queue.items[i + 1];
     }
   }
-  queue[MAX_STATION_ID - 1] = -1;
+  queue.items[MAX_STATION_ID - 1] = -1;
 }
 
-void add(int set[], int val) {
-  for (int i = 0; i < MAX_STATION_ID; i++) {
-    if (set[i] == -1) {
-      set[i] = val;
-      break;
-    }
-  }
-}
-
-void dijkstra(int** graph, int s) {
+void dijkstra(int** graph, int origin) {
   // Dijkstra implementation based off https://brilliant.org/wiki/dijkstras-short-path-finder/
+  // Array of distances from all stations to origin
   int dist[MAX_STATION_ID];
   for (int i = 0; i < MAX_STATION_ID; i++) {
     dist[i] = INT_MAX;
   }
-  dist[s] = 0;
-  int Q[MAX_STATION_ID];
+  // Queue of stations to be worked through
+  dist[origin] = 0;
+  Queue Q;
   for (int i = 0; i < MAX_STATION_ID; i++) {
-    Q[i] = i;
+    Q.items[i] = i;
   }
-  int S[MAX_STATION_ID] = {-1};
-  for (int i = 0; i < MAX_STATION_ID; i++) {
-    S[i] = -1;
-  }
-  while (Q[0] != -1) {
+  while (Q.items[0] != -1) {
     int v = get_next_closest_node(dist, Q);
     pop(Q, v);
-    add(S, v);
     for (int u = 0; u < MAX_STATION_ID; u++) {
       if (graph[v][u] != -1) {
         if ((dist[v] + graph[v][u]) < dist[u]) {
@@ -67,7 +61,7 @@ void dijkstra(int** graph, int s) {
     }
   }
   for (int i = 0; i < MAX_STATION_ID; i++) {
-    printf("%s to %s: %i\n", STATIONS[s].name, STATIONS[i].name, dist[i]);
+    printf("%s to %s: %i\n", STATIONS[origin].name, STATIONS[i].name, dist[i]);
   }
 }
 

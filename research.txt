@@ -6,5 +6,3 @@ https://www.101computing.net/london-underground-journey-planner/
 
 - colour in terminal
 - Walking time at stations
-- create Set struct
-- create Queue struct
