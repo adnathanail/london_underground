@@ -7,7 +7,7 @@ add_executable(london_underground
     main.c
     data/data.c
     data/data.h
-    libs/types.h
+    libs/data_types.h
     libs/data_proc.c
     libs/data_proc.h
 )

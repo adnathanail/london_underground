@@ -5,7 +5,7 @@
 #ifndef LONDON_UNDERGROUND_TEST_DATA_H
 #define LONDON_UNDERGROUND_TEST_DATA_H
 
-#include "types.h"
+#include "../libs/data_types.h"
 
 #define MAX_STATION_ID 9
 #define MAX_STATION_NAME_LENGTH 100

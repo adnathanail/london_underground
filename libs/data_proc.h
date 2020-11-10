@@ -5,7 +5,7 @@
 #ifndef LONDON_UNDERGROUND_DATA_PROC_H
 #define LONDON_UNDERGROUND_DATA_PROC_H
 
-#include "types.h"
+#include "data_types.h"
 
 struct graph_connection {
   int time;

@@ -2,8 +2,8 @@
 // Created by Alexander Nathanail on 10/11/2020.
 //
 
-#ifndef LONDON_UNDERGROUND_TYPES_H
-#define LONDON_UNDERGROUND_TYPES_H
+#ifndef LONDON_UNDERGROUND_DATA_TYPES_H
+#define LONDON_UNDERGROUND_DATA_TYPES_H
 
 struct station {
   int id;
@@ -35,4 +35,4 @@ struct line {
 
 typedef struct line Line;
 
-#endif //LONDON_UNDERGROUND_TYPES_H
+#endif //LONDON_UNDERGROUND_DATA_TYPES_H

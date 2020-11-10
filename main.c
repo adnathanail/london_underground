@@ -3,12 +3,7 @@
 
 #include "data/data.h"
 #include "libs/data_proc.h"
-
-struct queue {
-  int items[MAX_STATION_ID];
-};
-
-typedef struct queue Queue;
+#include "libs/data_structures.h"
 
 struct path_connection {
   int station_id;
@@ -18,7 +13,6 @@ struct path_connection {
 typedef struct path_connection PathConnection;
 
 int get_next_closest_node(const int dist[MAX_STATION_ID], Queue Q);
-void pop(Queue* queue, int val);
 void display_results(int origin, int destination, const int *dist, const PathConnection paths[MAX_STATION_ID][MAX_STATION_ID]);
 void dijkstra(GraphConnection** graph, int origin, int destination);
 
@@ -48,19 +42,6 @@ int get_next_closest_node(const int dist[MAX_STATION_ID], Queue Q) {
     i++;
   }
   return closest_node;
-}
-
-void pop(Queue* queue, int val) {
-  int shifting = 0;
-  for (int i = 0; i < MAX_STATION_ID; i++) {
-    if (queue->items[i] == val) {
-      shifting = 1;
-    }
-    if (shifting) {
-      queue->items[i] = queue->items[i + 1];
-    }
-  }
-  queue->items[MAX_STATION_ID - 1] = -1;
 }
 
 void display_results(int origin, int destination, const int *dist, const PathConnection paths[MAX_STATION_ID][MAX_STATION_ID]) {
