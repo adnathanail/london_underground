@@ -3,6 +3,10 @@ https://github.com/nicola/tubemaps
 https://en.wikipedia.org/wiki/Shortest_path_problem#Algorithms
 http://www.algomation.com/algorithm/dijkstra-graph-shortest-path-london-underground
 https://www.101computing.net/london-underground-journey-planner/
+https://www.google.com/maps/dir/St+Pancras+International,+Euston+Road,+London/Fulham+Broadway,+Fulham+Rd,+Fulham,+London+SW6+1BY/@51.5117884,-0.2075019,11.87z/am=t/data=!4m19!4m18!1m5!1m1!1s0x48761b3b8d98ed25:0xb92d6fcfa832dd12!2m2!1d-0.126133!2d51.531427!1m5!1m1!1s0x48760f84489049ab:0xc73fd904abc6875a!2m2!1d-0.1944142!2d51.4802592!2m3!6e0!7e2!8j1604997000!3e3!5i1
+http://content.tfl.gov.uk/large-print-tube-map.pdf
+https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/
+https://github.com/nicola/tubemaps
 
 - colour in terminal
 - Walking time at stations

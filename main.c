@@ -10,6 +10,23 @@ struct queue {
 
 typedef struct queue Queue;
 
+struct graph_connection {
+  int time;
+  int line;
+};
+
+typedef struct graph_connection GraphConnection;
+
+struct path_connection {
+  int station_id;
+  int line;
+};
+
+typedef struct path_connection PathConnection;
+
+char** station_names;
+char** line_names;
+
 int get_next_closest_node(const int dist[MAX_STATION_ID], Queue Q) {
   int closest_node = -1;
   int closes_node_distance = INT_MAX;
@@ -37,42 +54,64 @@ void pop(Queue* queue, int val) {
   queue->items[MAX_STATION_ID - 1] = -1;
 }
 
-void dijkstra(int** graph, char** station_names, int origin, int destination) {
-  // Dijkstra implementation based off https://brilliant.org/wiki/dijkstras-short-path-finder/
-  // Array of distances from all stations to origin
-  int dist[MAX_STATION_ID];
+void display_results(int origin, int destination, const int *dist, const PathConnection paths[MAX_STATION_ID][MAX_STATION_ID]) {
   for (int i = 0; i < MAX_STATION_ID; i++) {
-    dist[i] = INT_MAX;
-  }
-  // Queue of stations to be worked through
-  dist[origin] = 0;
-  Queue Q;
-  for (int i = 0; i < MAX_STATION_ID; i++) {
-    Q.items[i] = i;
-  }
-  // Array of arrays of the stations visited in each stations path from the origin
-  Queue paths[MAX_STATION_ID];
-  for (int i = 0; i < MAX_STATION_ID; i++) {
-    for (int j = 0; j < MAX_STATION_ID; j++) {
-      paths[i].items[j] = -1;
+    if (i == destination) {
+      printf("%s to %s: %i via ", station_names[origin], station_names[i], dist[i]);
+      int j = 0;
+      int current_line = -1;
+      while (paths[i][j].station_id != -1) {
+        if (current_line != paths[i][j].line) {
+          current_line = paths[i][j].line;
+          printf("%s\n", line_names[paths[i][j].line]);
+        }
+        printf("\t%s\n", station_names[paths[i][j].station_id]);
+        j++;
+      }
+      break;
     }
   }
-  paths[origin].items[0] = origin;
-  while (Q.items[0] != -1) {
-    int v = get_next_closest_node(dist, Q);
-    pop(&Q, v);
+}
+
+void dijkstra(GraphConnection** graph, int origin, int destination) {
+  // Dijkstra implementation based off https://brilliant.org/wiki/dijkstras-short-path-finder/
+  int distances_to_origin[MAX_STATION_ID];
+  for (int i = 0; i < MAX_STATION_ID; i++) {
+    distances_to_origin[i] = INT_MAX;
+  }
+  distances_to_origin[origin] = 0;
+
+  Queue remaining_stations;
+  for (int i = 0; i < MAX_STATION_ID; i++) {
+    remaining_stations.items[i] = i;
+  }
+  // Array of arrays of the stations visited in each stations path from the origin
+  PathConnection paths[MAX_STATION_ID][MAX_STATION_ID];
+  for (int i = 0; i < MAX_STATION_ID; i++) {
+    for (int j = 0; j < MAX_STATION_ID; j++) {
+      paths[i][j].station_id = -1;
+      paths[i][j].line = -1;
+    }
+  }
+  paths[origin][0].station_id = origin;
+  // Dijkstra
+  while (remaining_stations.items[0] != -1) {
+    int v = get_next_closest_node(distances_to_origin, remaining_stations);
+    pop(&remaining_stations, v);
     for (int u = 0; u < MAX_STATION_ID; u++) {
-      if (graph[v][u] != -1) {
-        if ((dist[v] + graph[v][u]) < dist[u]) {
-          dist[u] = dist[v] + graph[v][u];
-          if (paths[v].items[0] != -1) {
+      if (graph[v][u].time != -1) {
+        if ((distances_to_origin[v] + graph[v][u].time) < distances_to_origin[u]) {
+          distances_to_origin[u] = distances_to_origin[v] + graph[v][u].time;
+          if (paths[v][0].station_id != -1) {
             for (int i = 0; i < MAX_STATION_ID; i++) {
-              if (paths[v].items[i] != -1) {  // Copy v to u
-                paths[u].items[i] = paths[v].items[i];
-              } else if (paths[v].items[i - 1] != -1) {  // Add u to the end of it's own path
-                paths[u].items[i] = u;
+              if (paths[v][i].station_id != -1) {  // Copy v to u
+                paths[u][i] = paths[v][i];
+              } else if (paths[v][i - 1].station_id != -1) {  // Add u to the end of it's own path
+                paths[u][i].station_id = u;
+                paths[u][i].line = graph[v][u].line;
               } else {  // Clear any remnants of old paths
-                paths[u].items[i] = -1;
+                paths[u][i].station_id = -1;
+                paths[u][i].line = -1;
               }
             }
           }
@@ -80,60 +119,66 @@ void dijkstra(int** graph, char** station_names, int origin, int destination) {
       }
     }
   }
-  for (int i = 0; i < MAX_STATION_ID; i++) {
-    if (i == destination) {
-      printf("%s to %s: %i via ", station_names[origin], station_names[i], dist[i]);
-      int j = 0;
-      while (paths[i].items[j] != -1) {
-        printf("%s, ", station_names[paths[i].items[j]]);
-        j++;
-      }
-      printf("\n");
-      break;
-    }
-  }
+  display_results(origin, destination, distances_to_origin, paths);
 }
 
-int** get_graph_from_connections(const Connection connections[]) {
+GraphConnection** get_graph_from_connections(const Connection connections[]) {
   int arr_len = MAX_STATION_ID + 1;  // If the max ID is 10 we need an array of length 11
-  int **out = malloc(arr_len * sizeof(int*));
+  GraphConnection **out = malloc(arr_len * sizeof(GraphConnection*));
   for (int i = 0; i < arr_len; i++) {
-    out[i] = malloc(arr_len * sizeof(int));
+    out[i] = malloc(arr_len * sizeof(GraphConnection));
   }
   // Initialise graph with every station unconnected
   for (int i = 0; i < arr_len; i++) {
     for (int j = 0; j < arr_len; j++) {
-      out[i][j] = -1;
+      out[i][j].time = -1;
+      out[i][j].line = -1;
     }
   }
   // Populate graph with connections
   for (int i = 0; i < NUM_CONNECTIONS; i++) {
-    out[connections[i].station1][connections[i].station2] = connections[i].time;
-    out[connections[i].station2][connections[i].station1] = connections[i].time;
+    out[connections[i].station1][connections[i].station2].time = connections[i].time;
+    out[connections[i].station1][connections[i].station2].line = connections[i].line;
+    out[connections[i].station2][connections[i].station1].time = connections[i].time;
+    out[connections[i].station2][connections[i].station1].line = connections[i].line;
   }
   return out;
 }
 
-char** get_station_names_from_stations(const Station stations[]) {
+void get_station_names_from_stations(const Station stations[]) {
   int arr_len = MAX_STATION_ID + 1;  // If the max ID is 10 we need an array of length 11
-  char **out = malloc(arr_len * sizeof(char*));
+  station_names = malloc(arr_len * sizeof(char*));
   for (int i = 0; i < arr_len; i++) {
-    out[i] = malloc(MAX_STATION_NAME_LENGTH * sizeof(char));
-    strcpy(out[i], "");
+    station_names[i] = malloc(MAX_NAME_LENGTH * sizeof(char));
+    strcpy(station_names[i], "");
   }
   for (int i = 0; i < arr_len; i++) {
     if (stations[i].id > 0) {
-      strcpy(out[stations[i].id], stations[i].name);
+      strcpy(station_names[stations[i].id], stations[i].name);
     }
   }
-  return out;
+}
+
+void get_line_names_from_lines(const Line lines[]) {
+  int arr_len = NUM_LINES + 1;  // If the max ID is 10 we need an array of length 11
+  line_names = malloc(arr_len * sizeof(char*));
+  for (int i = 0; i < arr_len; i++) {
+    line_names[i] = malloc(MAX_NAME_LENGTH * sizeof(char));
+    strcpy(line_names[i], "");
+  }
+  for (int i = 0; i < arr_len; i++) {
+    if (lines[i].line > 0) {
+      strcpy(line_names[lines[i].line], lines[i].name);
+    }
+  }
 }
 
 int main() {
-  int** graph = get_graph_from_connections(CONNECTIONS);
-  char** station_names = get_station_names_from_stations(STATIONS);
+  GraphConnection** graph = get_graph_from_connections(CONNECTIONS);
+  get_station_names_from_stations(STATIONS);
+  get_line_names_from_lines(LINES);
 
-  dijkstra(graph, station_names, 145, 96);
+  dijkstra(graph, 145, 96);
   // ^ STP to Fulham Broadway
 
   return 0;
