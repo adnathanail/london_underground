@@ -23,17 +23,17 @@ int get_next_closest_node(const int dist[MAX_STATION_ID], Queue Q) {
   return closest_node;
 }
 
-void pop(Queue queue, int val) {
+void pop(Queue* queue, int val) {
   int shifting = 0;
   for (int i = 0; i < MAX_STATION_ID; i++) {
-    if (queue.items[i] == val) {
+    if (queue->items[i] == val) {
       shifting = 1;
     }
     if (shifting) {
-      queue.items[i] = queue.items[i + 1];
+      queue->items[i] = queue->items[i + 1];
     }
   }
-  queue.items[MAX_STATION_ID - 1] = -1;
+  queue->items[MAX_STATION_ID - 1] = -1;
 }
 
 void dijkstra(int** graph, int origin) {
@@ -51,7 +51,7 @@ void dijkstra(int** graph, int origin) {
   }
   while (Q.items[0] != -1) {
     int v = get_next_closest_node(dist, Q);
-    pop(Q, v);
+    pop(&Q, v);
     for (int u = 0; u < MAX_STATION_ID; u++) {
       if (graph[v][u] != -1) {
         if ((dist[v] + graph[v][u]) < dist[u]) {
