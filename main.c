@@ -104,8 +104,8 @@ void display_route(int origin, int destination, const int *distances_to_origin, 
   printf("%s to %s: %i minutes\n------\n", stations_map[origin]->name, stations_map[destination]->name, distances_to_origin[destination]);
   int j = 0;
   int current_line = -1;
-//  double min_zone = 100;
-//  double max_zone = -1;
+  double min_zone = 100;
+  double max_zone = -1;
   while (paths[destination][j].station_id != -1) {
     if (current_line != paths[destination][j].line && paths[destination][j].line != -1) {
       if (j != 0) {
@@ -115,13 +115,13 @@ void display_route(int origin, int destination, const int *distances_to_origin, 
       printf("Change to %s\n", line_names[paths[destination][j].line]);
     }
     printf("\t%s\n", stations_map[paths[destination][j].station_id]->name);
-//    if (stations_map[paths[destination][j].station_id]->zone < min_zone) {
-//      min_zone = stations_map[paths[destination][j].station_id]->zone;
-//    }
-//    if (stations_map[paths[destination][j].station_id]->zone > max_zone) {
-//      max_zone = stations_map[paths[destination][j].station_id]->zone;
-//    }
-//    printf("Zones %f to %f\n", min_zone, max_zone);
+    if (stations_map[paths[destination][j].station_id]->zone < min_zone) {
+      min_zone = stations_map[paths[destination][j].station_id]->zone;
+    }
+    if (stations_map[paths[destination][j].station_id]->zone > max_zone) {
+      max_zone = stations_map[paths[destination][j].station_id]->zone;
+    }
     j++;
   }
+  printf("Zones %f to %f\n", min_zone, max_zone);
 }
