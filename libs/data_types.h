@@ -17,6 +17,13 @@ struct station {
 
 typedef struct station Station;
 
+struct partial_station {
+  char* name;
+  double zone;
+};
+
+typedef struct partial_station PartialStation;
+
 struct connection {
   int station1;
   int station2;

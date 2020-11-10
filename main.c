@@ -13,24 +13,25 @@ struct path_connection {
 typedef struct path_connection PathConnection;
 
 int get_next_closest_node(const int dist[MAX_STATION_ID], Queue remaining_stations);
-void display_results(int origin, int destination, const int *distances_to_origin, const PathConnection paths[MAX_STATION_ID][MAX_STATION_ID]);
-void dijkstra(GraphConnection** graph, int origin, int destination);
+void display_route(int origin, int destination, const int *distances_to_origin, const PathConnection paths[MAX_STATION_ID][MAX_STATION_ID]);
+void dijkstra(int origin, int destination);
 
-char** station_names;
+GraphConnection** graph;
+PartialStation** stations_map;
 char** line_names;
 
 int main() {
-  GraphConnection** graph = get_graph_from_connections(CONNECTIONS, NUM_CONNECTIONS, MAX_STATION_ID + 1);
-  station_names = get_station_names_from_stations(STATIONS, MAX_STATION_ID + 1, MAX_NAME_LENGTH);
+  graph = get_graph_from_connections(CONNECTIONS, NUM_CONNECTIONS, MAX_STATION_ID + 1);
+  stations_map = get_stations_map_from_stations(STATIONS, MAX_STATION_ID + 1, MAX_NAME_LENGTH);
   line_names = get_line_names_from_lines(LINES, NUM_LINES + 1, MAX_NAME_LENGTH);
 
-  dijkstra(graph, 145, 96);
+  dijkstra(145, 96);
   // ^ STP to Fulham Broadway
 
   return 0;
 }
 
-void dijkstra(GraphConnection** graph, int origin, int destination) {
+void dijkstra(int origin, int destination) {
   // Dijkstra implementation based off https://brilliant.org/wiki/dijkstras-short-path-finder/
 
   int distances_to_origin[MAX_STATION_ID];
@@ -82,7 +83,7 @@ void dijkstra(GraphConnection** graph, int origin, int destination) {
     }
   }
 
-  display_results(origin, destination, distances_to_origin, paths);
+  display_route(origin, destination, distances_to_origin, paths);
 }
 
 int get_next_closest_node(const int dist[MAX_STATION_ID], Queue remaining_stations) {
@@ -99,24 +100,28 @@ int get_next_closest_node(const int dist[MAX_STATION_ID], Queue remaining_statio
   return closest_node;
 }
 
-void display_results(int origin, int destination, const int *distances_to_origin, const PathConnection paths[MAX_STATION_ID][MAX_STATION_ID]) {
-  for (int i = 0; i < MAX_STATION_ID; i++) {
-    if (i == destination) {
-      printf("%s to %s: %i minutes\n------\n", station_names[origin], station_names[i], distances_to_origin[i]);
-      int j = 0;
-      int current_line = -1;
-      while (paths[i][j].station_id != -1) {
-        if (current_line != paths[i][j].line && paths[i][j].line != -1) {
-          if (j != 0) {
-            printf("\t%s\n", station_names[paths[i][j].station_id]);
-          }
-          current_line = paths[i][j].line;
-          printf("Change to %s\n", line_names[paths[i][j].line]);
-        }
-        printf("\t%s\n", station_names[paths[i][j].station_id]);
-        j++;
+void display_route(int origin, int destination, const int *distances_to_origin, const PathConnection paths[MAX_STATION_ID][MAX_STATION_ID]) {
+  printf("%s to %s: %i minutes\n------\n", stations_map[origin]->name, stations_map[destination]->name, distances_to_origin[destination]);
+  int j = 0;
+  int current_line = -1;
+//  double min_zone = 100;
+//  double max_zone = -1;
+  while (paths[destination][j].station_id != -1) {
+    if (current_line != paths[destination][j].line && paths[destination][j].line != -1) {
+      if (j != 0) {
+        printf("\t%s\n", stations_map[paths[destination][j].station_id]->name);
       }
-      break;
+      current_line = paths[destination][j].line;
+      printf("Change to %s\n", line_names[paths[destination][j].line]);
     }
+    printf("\t%s\n", stations_map[paths[destination][j].station_id]->name);
+//    if (stations_map[paths[destination][j].station_id]->zone < min_zone) {
+//      min_zone = stations_map[paths[destination][j].station_id]->zone;
+//    }
+//    if (stations_map[paths[destination][j].station_id]->zone > max_zone) {
+//      max_zone = stations_map[paths[destination][j].station_id]->zone;
+//    }
+//    printf("Zones %f to %f\n", min_zone, max_zone);
+    j++;
   }
 }
