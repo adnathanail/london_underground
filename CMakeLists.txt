@@ -10,4 +10,6 @@ add_executable(london_underground
     libs/data_types.h
     libs/data_proc.c
     libs/data_proc.h
+    libs/data_structures.c
+    libs/data_structures.h
 )

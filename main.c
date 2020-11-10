@@ -72,6 +72,7 @@ void dijkstra(GraphConnection** graph, int origin, int destination) {
   distances_to_origin[origin] = 0;
 
   Queue remaining_stations;
+  queue_init(&remaining_stations, MAX_STATION_ID);
   for (int i = 0; i < MAX_STATION_ID; i++) {
     remaining_stations.items[i] = i;
   }
@@ -87,7 +88,7 @@ void dijkstra(GraphConnection** graph, int origin, int destination) {
   // Dijkstra
   while (remaining_stations.items[0] != -1) {
     int v = get_next_closest_node(distances_to_origin, remaining_stations);
-    pop(&remaining_stations, v);
+    queue_pop(&remaining_stations, v);
     for (int u = 0; u < MAX_STATION_ID; u++) {
       if (graph[v][u].time != -1) {
         if ((distances_to_origin[v] + graph[v][u].time) < distances_to_origin[u]) {

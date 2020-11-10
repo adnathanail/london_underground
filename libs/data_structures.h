@@ -5,14 +5,14 @@
 #ifndef LONDON_UNDERGROUND_DATA_STRUCTURES_H
 #define LONDON_UNDERGROUND_DATA_STRUCTURES_H
 
-#include "../data/data.h"
-
 struct queue {
-  int items[MAX_STATION_ID];
+  int* items;
+  int length;
 };
 
 typedef struct queue Queue;
 
-void pop(Queue* queue, int val);
+void queue_init(Queue* queue, int length);
+void queue_pop(Queue* queue, int val);
 
 #endif //LONDON_UNDERGROUND_DATA_STRUCTURES_H
