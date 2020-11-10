@@ -12,8 +12,8 @@ struct path_connection {
 
 typedef struct path_connection PathConnection;
 
-int get_next_closest_node(const int dist[MAX_STATION_ID], Queue Q);
-void display_results(int origin, int destination, const int *dist, const PathConnection paths[MAX_STATION_ID][MAX_STATION_ID]);
+int get_next_closest_node(const int dist[MAX_STATION_ID], Queue remaining_stations);
+void display_results(int origin, int destination, const int *distances_to_origin, const PathConnection paths[MAX_STATION_ID][MAX_STATION_ID]);
 void dijkstra(GraphConnection** graph, int origin, int destination);
 
 char** station_names;
@@ -70,7 +70,7 @@ void dijkstra(GraphConnection** graph, int origin, int destination) {
                 paths[u][i] = paths[v][i];
               } else if (paths[v][i - 1].station_id != -1) {
                 paths[u][i].station_id = u;
-                paths[u][i].line = graph[v][u].line;
+                paths[u][i - 1].line = graph[v][u].line;  // Set the previous stations line
               } else {
                 paths[u][i].station_id = -1;
                 paths[u][i].line = -1;
@@ -85,30 +85,33 @@ void dijkstra(GraphConnection** graph, int origin, int destination) {
   display_results(origin, destination, distances_to_origin, paths);
 }
 
-int get_next_closest_node(const int dist[MAX_STATION_ID], Queue Q) {
+int get_next_closest_node(const int dist[MAX_STATION_ID], Queue remaining_stations) {
   int closest_node = -1;
   int closes_node_distance = INT_MAX;
   int i = 0;
-  while (Q.items[i] != -1 && i < MAX_STATION_ID) {
-    if (dist[Q.items[i]] < closes_node_distance || closest_node == -1) {
-      closest_node = Q.items[i];
-      closes_node_distance = dist[Q.items[i]];
+  while (remaining_stations.items[i] != -1 && i < MAX_STATION_ID) {
+    if (dist[remaining_stations.items[i]] < closes_node_distance || closest_node == -1) {
+      closest_node = remaining_stations.items[i];
+      closes_node_distance = dist[remaining_stations.items[i]];
     }
     i++;
   }
   return closest_node;
 }
 
-void display_results(int origin, int destination, const int *dist, const PathConnection paths[MAX_STATION_ID][MAX_STATION_ID]) {
+void display_results(int origin, int destination, const int *distances_to_origin, const PathConnection paths[MAX_STATION_ID][MAX_STATION_ID]) {
   for (int i = 0; i < MAX_STATION_ID; i++) {
     if (i == destination) {
-      printf("%s to %s: %i minutes\n", station_names[origin], station_names[i], dist[i]);
+      printf("%s to %s: %i minutes\n------\n", station_names[origin], station_names[i], distances_to_origin[i]);
       int j = 0;
       int current_line = -1;
       while (paths[i][j].station_id != -1) {
-        if (current_line != paths[i][j].line) {
+        if (current_line != paths[i][j].line && paths[i][j].line != -1) {
+          if (j != 0) {
+            printf("\t%s\n", station_names[paths[i][j].station_id]);
+          }
           current_line = paths[i][j].line;
-          printf("%s\n", line_names[paths[i][j].line]);
+          printf("Change to %s\n", line_names[paths[i][j].line]);
         }
         printf("\t%s\n", station_names[paths[i][j].station_id]);
         j++;
