@@ -89,39 +89,41 @@ void dijkstra(int** graph, char** station_names, int origin, int destination) {
         j++;
       }
       printf("\n");
+      break;
     }
   }
 }
 
 int** get_graph_from_connections(const Connection connections[]) {
-  int **out = malloc(MAX_STATION_ID * sizeof(int*));
-  for (int i = 0; i < MAX_STATION_ID; i++) {
-    out[i] = malloc(MAX_STATION_ID * sizeof(int));
+  int arr_len = MAX_STATION_ID + 1;  // If the max ID is 10 we need an array of length 11
+  int **out = malloc(arr_len * sizeof(int*));
+  for (int i = 0; i < arr_len; i++) {
+    out[i] = malloc(arr_len * sizeof(int));
   }
   // Initialise graph with every station unconnected
-  for (int i = 0; i < MAX_STATION_ID; i++) {
-    for (int j = 0; j < MAX_STATION_ID; j++) {
+  for (int i = 0; i < arr_len; i++) {
+    for (int j = 0; j < arr_len; j++) {
       out[i][j] = -1;
     }
   }
   // Populate graph with connections
   for (int i = 0; i < NUM_CONNECTIONS; i++) {
-    out[connections[i].station1 - 1][connections[i].station2 - 1] = connections[i].time;
-    out[connections[i].station2 - 1][connections[i].station1 - 1] = connections[i].time;
+    out[connections[i].station1][connections[i].station2] = connections[i].time;
+    out[connections[i].station2][connections[i].station1] = connections[i].time;
   }
   return out;
 }
 
 char** get_station_names_from_stations(const Station stations[]) {
-  char **out = malloc(MAX_STATION_ID * sizeof(char*));
-  for (int i = 0; i < MAX_STATION_ID; i++) {
+  int arr_len = MAX_STATION_ID + 1;  // If the max ID is 10 we need an array of length 11
+  char **out = malloc(arr_len * sizeof(char*));
+  for (int i = 0; i < arr_len; i++) {
     out[i] = malloc(MAX_STATION_NAME_LENGTH * sizeof(char));
     strcpy(out[i], "");
   }
-  for (int i = 0; i < MAX_STATION_ID; i++) {
+  for (int i = 0; i < arr_len; i++) {
     if (stations[i].id > 0) {
-      printf("%i %s 1\n", stations[i].id, stations[i].name);
-      strcpy(out[stations[i].id - 1], stations[i].name);
+      strcpy(out[stations[i].id], stations[i].name);
     }
   }
   return out;
@@ -131,7 +133,8 @@ int main() {
   int** graph = get_graph_from_connections(CONNECTIONS);
   char** station_names = get_station_names_from_stations(STATIONS);
 
-  dijkstra(graph, station_names, 144, 95);
+  dijkstra(graph, station_names, 145, 96);
+  // ^ STP to Fulham Broadway
 
   return 0;
 }

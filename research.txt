@@ -6,3 +6,4 @@ https://www.101computing.net/london-underground-journey-planner/
 
 - colour in terminal
 - Walking time at stations
+- min and max zone to calculate tickets
