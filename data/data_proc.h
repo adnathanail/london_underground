@@ -5,9 +5,7 @@
 #ifndef LONDON_UNDERGROUND_DATA_PROC_H
 #define LONDON_UNDERGROUND_DATA_PROC_H
 
-#endif //LONDON_UNDERGROUND_DATA_PROC_H
-
-#include "data.h"
+#include "types.h"
 
 struct graph_connection {
   int time;
@@ -19,3 +17,5 @@ typedef struct graph_connection GraphConnection;
 extern GraphConnection** get_graph_from_connections(const Connection connections[]);
 char** get_station_names_from_stations(const Station stations[]);
 char** get_line_names_from_lines(const Line lines[]);
+
+#endif //LONDON_UNDERGROUND_DATA_PROC_H

@@ -4,9 +4,8 @@
 
 #ifndef LONDON_UNDERGROUND_TEST_DATA_H
 #define LONDON_UNDERGROUND_TEST_DATA_H
-#endif //LONDON_UNDERGROUND_TEST_DATA_H
 
-#include "types.c"
+#include "types.h"
 
 #define MAX_STATION_ID 9
 #define MAX_STATION_NAME_LENGTH 100
@@ -15,3 +14,5 @@ extern const Station STATIONS[];
 extern const Connection CONNECTIONS[];
 #define NUM_LINES 1
 extern const Line LINES[];
+
+#endif //LONDON_UNDERGROUND_TEST_DATA_H

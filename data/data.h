@@ -5,9 +5,7 @@
 #ifndef LONDON_UNDERGROUND_DATA_H
 #define LONDON_UNDERGROUND_DATA_H
 
-#endif //LONDON_UNDERGROUND_DATA_H
-
-#include "types.c"
+#include "types.h"
 
 #define MAX_STATION_ID 303
 // ^ not NUM_STATIONS as there are missing station ID's
@@ -18,3 +16,5 @@ extern const Station STATIONS[];
 extern const Connection CONNECTIONS[];
 #define NUM_LINES 13
 extern const Line LINES[];
+
+#endif //LONDON_UNDERGROUND_DATA_H

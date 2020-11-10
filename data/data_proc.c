@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <strings.h>
 #include "data_proc.h"
+#include "data.h"
 
 
 GraphConnection** get_graph_from_connections(const Connection connections[]) {
