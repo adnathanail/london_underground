@@ -8,4 +8,6 @@ add_executable(london_underground
     data/types.c
     data/data.c
     data/data.h
+    data/data_proc.c
+    data/data_proc.h
 )

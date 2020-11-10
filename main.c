@@ -1,21 +1,13 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <limits.h>
-#include <strings.h>
-#include "data/data.h"
+
+#include "data/data_proc.h"
 
 struct queue {
   int items[MAX_STATION_ID];
 };
 
 typedef struct queue Queue;
-
-struct graph_connection {
-  int time;
-  int line;
-};
-
-typedef struct graph_connection GraphConnection;
 
 struct path_connection {
   int station_id;
@@ -24,8 +16,24 @@ struct path_connection {
 
 typedef struct path_connection PathConnection;
 
+int get_next_closest_node(const int dist[MAX_STATION_ID], Queue Q);
+void pop(Queue* queue, int val);
+void display_results(int origin, int destination, const int *dist, const PathConnection paths[MAX_STATION_ID][MAX_STATION_ID]);
+void dijkstra(GraphConnection** graph, int origin, int destination);
+
 char** station_names;
 char** line_names;
+
+int main() {
+  GraphConnection** graph = get_graph_from_connections(CONNECTIONS);
+  station_names = get_station_names_from_stations(STATIONS);
+  line_names = get_line_names_from_lines(LINES);
+
+  dijkstra(graph, 145, 96);
+  // ^ STP to Fulham Broadway
+
+  return 0;
+}
 
 int get_next_closest_node(const int dist[MAX_STATION_ID], Queue Q) {
   int closest_node = -1;
@@ -57,7 +65,7 @@ void pop(Queue* queue, int val) {
 void display_results(int origin, int destination, const int *dist, const PathConnection paths[MAX_STATION_ID][MAX_STATION_ID]) {
   for (int i = 0; i < MAX_STATION_ID; i++) {
     if (i == destination) {
-      printf("%s to %s: %i via ", station_names[origin], station_names[i], dist[i]);
+      printf("%s to %s: %i minutes\n", station_names[origin], station_names[i], dist[i]);
       int j = 0;
       int current_line = -1;
       while (paths[i][j].station_id != -1) {
@@ -120,66 +128,4 @@ void dijkstra(GraphConnection** graph, int origin, int destination) {
     }
   }
   display_results(origin, destination, distances_to_origin, paths);
-}
-
-GraphConnection** get_graph_from_connections(const Connection connections[]) {
-  int arr_len = MAX_STATION_ID + 1;  // If the max ID is 10 we need an array of length 11
-  GraphConnection **out = malloc(arr_len * sizeof(GraphConnection*));
-  for (int i = 0; i < arr_len; i++) {
-    out[i] = malloc(arr_len * sizeof(GraphConnection));
-  }
-  // Initialise graph with every station unconnected
-  for (int i = 0; i < arr_len; i++) {
-    for (int j = 0; j < arr_len; j++) {
-      out[i][j].time = -1;
-      out[i][j].line = -1;
-    }
-  }
-  // Populate graph with connections
-  for (int i = 0; i < NUM_CONNECTIONS; i++) {
-    out[connections[i].station1][connections[i].station2].time = connections[i].time;
-    out[connections[i].station1][connections[i].station2].line = connections[i].line;
-    out[connections[i].station2][connections[i].station1].time = connections[i].time;
-    out[connections[i].station2][connections[i].station1].line = connections[i].line;
-  }
-  return out;
-}
-
-void get_station_names_from_stations(const Station stations[]) {
-  int arr_len = MAX_STATION_ID + 1;  // If the max ID is 10 we need an array of length 11
-  station_names = malloc(arr_len * sizeof(char*));
-  for (int i = 0; i < arr_len; i++) {
-    station_names[i] = malloc(MAX_NAME_LENGTH * sizeof(char));
-    strcpy(station_names[i], "");
-  }
-  for (int i = 0; i < arr_len; i++) {
-    if (stations[i].id > 0) {
-      strcpy(station_names[stations[i].id], stations[i].name);
-    }
-  }
-}
-
-void get_line_names_from_lines(const Line lines[]) {
-  int arr_len = NUM_LINES + 1;  // If the max ID is 10 we need an array of length 11
-  line_names = malloc(arr_len * sizeof(char*));
-  for (int i = 0; i < arr_len; i++) {
-    line_names[i] = malloc(MAX_NAME_LENGTH * sizeof(char));
-    strcpy(line_names[i], "");
-  }
-  for (int i = 0; i < arr_len; i++) {
-    if (lines[i].line > 0) {
-      strcpy(line_names[lines[i].line], lines[i].name);
-    }
-  }
-}
-
-int main() {
-  GraphConnection** graph = get_graph_from_connections(CONNECTIONS);
-  get_station_names_from_stations(STATIONS);
-  get_line_names_from_lines(LINES);
-
-  dijkstra(graph, 145, 96);
-  // ^ STP to Fulham Broadway
-
-  return 0;
 }
