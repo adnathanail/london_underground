@@ -101,18 +101,24 @@ int get_next_closest_node(const int dist[MAX_STATION_ID], Queue remaining_statio
 }
 
 void display_route(int origin, int destination, const int *distances_to_origin, const PathConnection paths[MAX_STATION_ID][MAX_STATION_ID]) {
-  printf("%s to %s: %i minutes\n------\n", stations_map[origin]->name, stations_map[destination]->name, distances_to_origin[destination]);
+  printf("%s to %s: %i minutes\n", stations_map[origin]->name, stations_map[destination]->name, distances_to_origin[destination]);
+  puts("--------------------");
   int j = 0;
   int current_line = -1;
   double min_zone = 100;
   double max_zone = -1;
+  int num_changes = 0;
   while (paths[destination][j].station_id != -1) {
     if (current_line != paths[destination][j].line && paths[destination][j].line != -1) {
-      if (j != 0) {
-        printf("\t%s\n", stations_map[paths[destination][j].station_id]->name);
-      }
       current_line = paths[destination][j].line;
-      printf("Change to %s\n", line_names[paths[destination][j].line]);
+      if (j == 0) {
+        printf("Start on ");
+      } else {
+        num_changes += 1;
+        printf("\t%s\n", stations_map[paths[destination][j].station_id]->name);
+        printf("Change to ");
+      }
+      printf("%s\n", line_names[paths[destination][j].line]);
     }
     printf("\t%s\n", stations_map[paths[destination][j].station_id]->name);
     if (stations_map[paths[destination][j].station_id]->zone < min_zone) {
@@ -123,5 +129,7 @@ void display_route(int origin, int destination, const int *distances_to_origin, 
     }
     j++;
   }
+  puts("--------------------");
   printf("Zones %.1f to %.1f\n", min_zone, max_zone);
+  printf("%i changes\n", num_changes);
 }
