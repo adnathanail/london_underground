@@ -26,7 +26,6 @@ int main() {
   stations_map = get_stations_map_from_stations(STATIONS, NUM_STATIONS, MAX_STATION_ID + 1, MAX_NAME_LENGTH);
   line_names = get_line_names_from_lines(LINES, NUM_LINES, MAX_LINE_ID + 1, MAX_NAME_LENGTH);
 
-
   int origin = read_int("Enter origin station ID: ");
   int destination = read_int("Enter destination station ID: ");
 
@@ -106,6 +105,7 @@ int get_next_closest_node(const int dist[MAX_STATION_ID], Queue remaining_statio
 }
 
 void display_route(int origin, int destination, const int *distances_to_origin, const PathConnection paths[MAX_STATION_ID][MAX_STATION_ID]) {
+  puts("--------------------");
   printf("%s to %s: %i minutes\n", stations_map[origin]->name, stations_map[destination]->name, distances_to_origin[destination]);
   puts("--------------------");
   int j = 0;

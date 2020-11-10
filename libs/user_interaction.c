@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
+#include <limits.h>
+#include <errno.h>
 #include "data_types.h"
 
 char* read_string(char* prompt) {
@@ -21,9 +23,23 @@ char* read_string(char* prompt) {
 }
 
 int read_int(char* prompt) {
-  char* input = read_string("Enter origin station ID: ");
-  int out;
-  sscanf(input, "%i", &out);
-  free(input);
+  int out = -1;
+
+  while (out == -1) {
+    char* input = read_string(prompt);
+    char *ptr;
+
+    long tem = strtol(input, &ptr, 10);
+    free(input);
+
+    if (tem == LONG_MAX || tem == LONG_MIN) {
+      printf("\tError: %s (code %i)\n", strerror(errno), errno);
+    } else if (tem) {
+      // Working in longs up to this point so that errors from strtol can be detected properly
+      out = (int) tem;
+    } else {
+      printf("\tError: %s is not a number\n", ptr);
+    }
+  }
   return out;
 }
