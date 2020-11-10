@@ -3,12 +3,12 @@
 //
 // Parsed from CSV files from https://github.com/nicola/tubemaps
 
-#include "types.c"
+#include "data.h"
 
 // Conversion regex
 //   Replace: ([^,]*),([^,]*),([^,]*),("[^"]*"),(("[^"]*")|(NULL)),([^,]*),([^,]*),([^,]*)\n
 //   With:    { .id = $1, .latitude = $2, .longitude = $3, .name = $4, .zone = $8, .total_lines = $9, .rail = $10 },\n
-Station stations[] = {
+const Station STATIONS[MAX_STATION_ID] = {
   { .id = 1, .latitude = 51.5028, .longitude = -0.2801, .name = "Acton Town", .zone = 3, .total_lines = 2, .rail = 0 },
   { .id = 2, .latitude = 51.5143, .longitude = -0.0755, .name = "Aldgate", .zone = 1, .total_lines = 2, .rail = 0 },
   { .id = 3, .latitude = 51.5154, .longitude = -0.0726, .name = "Aldgate East", .zone = 1, .total_lines = 2, .rail = 0 },
@@ -316,7 +316,7 @@ Station stations[] = {
 // Conversion regex
 //   Replace: ([^,]*),([^,]*),([^,]*),([^,]*)
 //   With:    { .station1 = $1, .station2 = $2, .line = $3, .time = $4 },
-Connection connections[] = {
+const Connection CONNECTIONS[NUM_CONNECTIONS] = {
   { .station1 = 11, .station2 = 163, .line = 1, .time = 1 },
   { .station1 = 11, .station2 = 212, .line = 1, .time = 2 },
   { .station1 = 49, .station2 = 87, .line = 1, .time = 1 },
@@ -728,7 +728,7 @@ Connection connections[] = {
 // Conversion regex
 //   Replace: ([^,]*),([^,]*),([^,]*),([^,]*)
 //   With:    { .line = $1, .name = $2, .colour = $3 },
-Line lines[] = {
+const Line LINES[NUM_LINES] = {
   { .line = 1, .name = "Bakerloo Line", .colour = "AE6017" },
   { .line = 3, .name = "Circle Line", .colour = "FFE02B" },
   { .line = 6, .name = "Hammersmith & City Line", .colour = "F491A8" },
