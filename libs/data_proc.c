@@ -45,13 +45,13 @@ PartialStation** get_stations_map_from_stations(const Station stations[], int nu
   return out;
 }
 
-char** get_line_names_from_lines(const Line lines[], int line_arr_length, int max_name_length) {
+char** get_line_names_from_lines(const Line lines[], int num_lines, int line_arr_length, int max_name_length) {
   char **out = malloc(line_arr_length * sizeof(char*));
   for (int i = 0; i < line_arr_length; i++) {
     out[i] = malloc(max_name_length * sizeof(char));
     strcpy(out[i], "");
   }
-  for (int i = 0; i < line_arr_length; i++) {
+  for (int i = 0; i < num_lines; i++) {
     if (lines[i].line > 0) {
       strcpy(out[lines[i].line], lines[i].name);
     }

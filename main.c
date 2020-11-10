@@ -23,7 +23,7 @@ char** line_names;
 int main() {
   graph = get_graph_from_connections(CONNECTIONS, NUM_CONNECTIONS, MAX_STATION_ID + 1);
   stations_map = get_stations_map_from_stations(STATIONS, NUM_STATIONS, MAX_STATION_ID + 1, MAX_NAME_LENGTH);
-  line_names = get_line_names_from_lines(LINES, NUM_LINES + 1, MAX_NAME_LENGTH);
+  line_names = get_line_names_from_lines(LINES, NUM_LINES, MAX_LINE_ID + 1, MAX_NAME_LENGTH);
 
   dijkstra(145, 96);
   // ^ STP to Fulham Broadway
