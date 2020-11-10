@@ -5,11 +5,13 @@
 #ifndef LONDON_UNDERGROUND_DATA_TYPES_H
 #define LONDON_UNDERGROUND_DATA_TYPES_H
 
+#define MAX_NAME_LENGTH 100
+
 struct station {
   int id;
   double latitude;
   double longitude;
-  char name[1000];
+  char name[MAX_NAME_LENGTH];
   double zone;
   int total_lines;
   int rail;
@@ -35,9 +37,9 @@ typedef struct connection Connection;
 
 struct line {
   int line;
-  char name[1000];
-  char colour[1000];
-  char stripe[1000];
+  char name[MAX_NAME_LENGTH];
+  char colour[MAX_NAME_LENGTH];
+  char stripe[MAX_NAME_LENGTH];
 };
 
 typedef struct line Line;
