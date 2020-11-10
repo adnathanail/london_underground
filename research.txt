@@ -10,4 +10,3 @@ https://github.com/nicola/tubemaps
 
 - colour in terminal
 - Walking time at stations
-- min and max zone to calculate tickets

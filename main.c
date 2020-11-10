@@ -25,7 +25,7 @@ int main() {
   stations_map = get_stations_map_from_stations(STATIONS, NUM_STATIONS, MAX_STATION_ID + 1, MAX_NAME_LENGTH);
   line_names = get_line_names_from_lines(LINES, NUM_LINES, MAX_LINE_ID + 1, MAX_NAME_LENGTH);
 
-  dijkstra(145, 96);
+  dijkstra(145, 21);
   // ^ STP to Fulham Broadway
 
   return 0;
@@ -123,5 +123,5 @@ void display_route(int origin, int destination, const int *distances_to_origin, 
     }
     j++;
   }
-  printf("Zones %f to %f\n", min_zone, max_zone);
+  printf("Zones %.1f to %.1f\n", min_zone, max_zone);
 }
