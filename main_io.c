@@ -98,7 +98,7 @@ int main() {
 //  int total_lines;
 //  int rail;
 
-  stations_fp = fopen("/Users/adnathanail/Documents/Projects/london-underground/data/london.stations.csv", "r");
+  stations_fp = fopen("/Users/adnathanail/Documents/Projects/london-underground/raw_data/london.stations.csv", "r");
   read_csv(stations_fp, 8);
 //  char ch;
 //  while((ch = (char)fgetc(stations_fp)) != '\n') {

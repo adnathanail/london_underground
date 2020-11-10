@@ -3,4 +3,9 @@ project(london_underground C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(london_underground main.c)
+add_executable(london_underground
+    main.c
+    data/types.c
+    data/test_data.c
+    data/test_data.h
+)
