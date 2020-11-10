@@ -8,7 +8,8 @@
 
 #include "types.c"
 
-#define NUM_STATIONS 9
+#define MAX_STATION_ID 9
+#define MAX_STATION_NAME_LENGTH 100
 extern const Station STATIONS[];
 #define NUM_CONNECTIONS 14
 extern const Connection CONNECTIONS[];

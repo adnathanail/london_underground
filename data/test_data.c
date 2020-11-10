@@ -14,34 +14,34 @@
 
 #include "test_data.h"
 
-// The first 9 STATIONS with ID's shifted
-const Station STATIONS[NUM_STATIONS] = {
-  { .id = 0, .latitude = 51.5028, .longitude = -0.2801, .name = "Acton Town", .zone = 3, .total_lines = 2, .rail = 0 },
-  { .id = 1, .latitude = 51.5143, .longitude = -0.0755, .name = "Aldgate", .zone = 1, .total_lines = 2, .rail = 0 },
-  { .id = 2, .latitude = 51.5154, .longitude = -0.0726, .name = "Aldgate East", .zone = 1, .total_lines = 2, .rail = 0 },
-  { .id = 3, .latitude = 51.5107, .longitude = -0.013, .name = "All Saints", .zone = 2, .total_lines = 1, .rail = 0 },
-  { .id = 4, .latitude = 51.5407, .longitude = -0.2997, .name = "Alperton", .zone = 4, .total_lines = 1, .rail = 0 },
-  { .id = 5, .latitude = 51.5322, .longitude = -0.1058, .name = "Angel", .zone = 1, .total_lines = 1, .rail = 0 },
-  { .id = 6, .latitude = 51.5653, .longitude = -0.1353, .name = "Archway", .zone = 2.5, .total_lines = 1, .rail = 0 },
-  { .id = 7, .latitude = 51.6164, .longitude = -0.1331, .name = "Arnos Grove", .zone = 4, .total_lines = 1, .rail = 0 },
-  { .id = 8, .latitude = 51.5586, .longitude = -0.1059, .name = "Arsenal", .zone = 2, .total_lines = 1, .rail = 0 },
+// The first 9 STATIONS
+const Station STATIONS[MAX_STATION_ID] = {
+  { .id = 1, .latitude = 51.5028, .longitude = -0.2801, .name = "Acton Town", .zone = 3, .total_lines = 2, .rail = 0 },
+  { .id = 2, .latitude = 51.5143, .longitude = -0.0755, .name = "Aldgate", .zone = 1, .total_lines = 2, .rail = 0 },
+  { .id = 3, .latitude = 51.5154, .longitude = -0.0726, .name = "Aldgate East", .zone = 1, .total_lines = 2, .rail = 0 },
+  { .id = 4, .latitude = 51.5107, .longitude = -0.013, .name = "All Saints", .zone = 2, .total_lines = 1, .rail = 0 },
+  { .id = 5, .latitude = 51.5407, .longitude = -0.2997, .name = "Alperton", .zone = 4, .total_lines = 1, .rail = 0 },
+  { .id = 6, .latitude = 51.5322, .longitude = -0.1058, .name = "Angel", .zone = 1, .total_lines = 1, .rail = 0 },
+  { .id = 7, .latitude = 51.5653, .longitude = -0.1353, .name = "Archway", .zone = 2.5, .total_lines = 1, .rail = 0 },
+  { .id = 8, .latitude = 51.6164, .longitude = -0.1331, .name = "Arnos Grove", .zone = 4, .total_lines = 1, .rail = 0 },
+  { .id = 9, .latitude = 51.5586, .longitude = -0.1059, .name = "Arsenal", .zone = 2, .total_lines = 1, .rail = 0 },
 };
 
 const Connection CONNECTIONS[NUM_CONNECTIONS] = {
-  { .station1 = 0, .station2 = 1, .line = 1, .time = 4 },
-  { .station1 = 0, .station2 = 7, .line = 1, .time = 8 },
-  { .station1 = 1, .station2 = 2, .line = 1, .time = 8 },
-  { .station1 = 1, .station2 = 7, .line = 1, .time = 11 },
-  { .station1 = 2, .station2 = 3, .line = 1, .time = 7 },
-  { .station1 = 2, .station2 = 5, .line = 1, .time = 4 },
-  { .station1 = 2, .station2 = 8, .line = 1, .time = 2 },
-  { .station1 = 3, .station2 = 4, .line = 1, .time = 9 },
-  { .station1 = 3, .station2 = 5, .line = 1, .time = 14 },
-  { .station1 = 4, .station2 = 5, .line = 1, .time = 10 },
-  { .station1 = 5, .station2 = 6, .line = 1, .time = 2 },
-  { .station1 = 6, .station2 = 7, .line = 1, .time = 1 },
-  { .station1 = 6, .station2 = 8, .line = 1, .time = 6 },
-  { .station1 = 7, .station2 = 8, .line = 1, .time = 7 },
+  { .station1 = 1, .station2 = 2, .line = 1, .time = 4 },
+  { .station1 = 1, .station2 = 8, .line = 1, .time = 8 },
+  { .station1 = 2, .station2 = 3, .line = 1, .time = 8 },
+  { .station1 = 2, .station2 = 8, .line = 1, .time = 11 },
+  { .station1 = 3, .station2 = 4, .line = 1, .time = 7 },
+  { .station1 = 3, .station2 = 6, .line = 1, .time = 4 },
+  { .station1 = 3, .station2 = 9, .line = 1, .time = 2 },
+  { .station1 = 4, .station2 = 5, .line = 1, .time = 9 },
+  { .station1 = 4, .station2 = 6, .line = 1, .time = 14 },
+  { .station1 = 5, .station2 = 6, .line = 1, .time = 10 },
+  { .station1 = 6, .station2 = 7, .line = 1, .time = 2 },
+  { .station1 = 7, .station2 = 8, .line = 1, .time = 1 },
+  { .station1 = 7, .station2 = 9, .line = 1, .time = 6 },
+  { .station1 = 8, .station2 = 9, .line = 1, .time = 7 },
 };
 
 const Line LINES[NUM_LINES] = {
