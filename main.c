@@ -4,6 +4,7 @@
 #include "data/data.h"
 #include "libs/data_proc.h"
 #include "libs/data_structures.h"
+#include "libs/user_interaction.h"
 
 struct path_connection {
   int station_id;
@@ -25,8 +26,12 @@ int main() {
   stations_map = get_stations_map_from_stations(STATIONS, NUM_STATIONS, MAX_STATION_ID + 1, MAX_NAME_LENGTH);
   line_names = get_line_names_from_lines(LINES, NUM_LINES, MAX_LINE_ID + 1, MAX_NAME_LENGTH);
 
-  dijkstra(145, 21);
-  // ^ STP to Fulham Broadway
+
+  int origin = read_int("Enter origin station ID: ");
+  int destination = read_int("Enter destination station ID: ");
+
+  dijkstra(origin, destination);
+  // STP, Becontree = 145, 21
 
   return 0;
 }

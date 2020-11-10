@@ -12,4 +12,6 @@ add_executable(london_underground
     libs/data_proc.h
     libs/data_structures.c
     libs/data_structures.h
+    libs/user_interaction.c
+    libs/user_interaction.h
 )

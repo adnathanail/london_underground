@@ -10,3 +10,4 @@ https://github.com/nicola/tubemaps
 
 - colour in terminal
 - Walking time at stations
+- Zone integers?
