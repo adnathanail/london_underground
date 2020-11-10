@@ -88,6 +88,7 @@ void dijkstra(int origin, int destination) {
   }
 
   display_route(origin, destination, distances_to_origin, paths);
+  queue_free(&remaining_stations);
 }
 
 int get_next_closest_node(const int dist[MAX_STATION_ID], Queue remaining_stations) {

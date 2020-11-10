@@ -14,5 +14,6 @@ typedef struct queue Queue;
 
 void queue_init(Queue* queue, int length);
 void queue_pop(Queue* queue, int val);
+void queue_free(Queue* queue);
 
 #endif //LONDON_UNDERGROUND_DATA_STRUCTURES_H

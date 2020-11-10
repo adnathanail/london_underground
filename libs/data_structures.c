@@ -18,8 +18,16 @@ void queue_pop(Queue* queue, int val) {
       shifting = 1;
     }
     if (shifting) {
-      queue->items[i] = queue->items[i + 1];
+      if (i < queue->length - 1) {
+        queue->items[i] = queue->items[i + 1];
+      } else {
+        queue->items[i] = - 1;
+      }
     }
   }
   queue->items[queue->length - 1] = -1;
+}
+
+void queue_free(Queue* queue) {
+  free(queue->items);
 }
