@@ -15,7 +15,7 @@ char* read_string(char* prompt) {
   fgets(buffer, MAX_NAME_LENGTH, stdin);
 
   size_t inputLength = strlen(buffer);
-  char *input = calloc(sizeof(char), inputLength);
+  char *input = calloc(inputLength, sizeof(char));
   strncpy(input, buffer, inputLength-1);
   input[inputLength-1] = '\0';
 
@@ -45,7 +45,7 @@ int read_int(char* prompt) {
 }
 
 int get_station(char* designation) {  // Designation is things like origin/destination
-  char* prompt = calloc(sizeof(char), 6 + strlen(designation) + 6 + 13 + 1);
+  char* prompt = calloc(6 + strlen(designation) + 6 + 13 + 1, sizeof(char));
   strcpy(prompt, "Enter ");
   strcat(prompt, designation);
   strcat(prompt, " station ID: ");

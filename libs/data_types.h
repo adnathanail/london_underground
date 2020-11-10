@@ -39,7 +39,6 @@ struct line {
   int line;
   char name[MAX_NAME_LENGTH];
   char colour[MAX_NAME_LENGTH];
-  char stripe[MAX_NAME_LENGTH];
 };
 
 typedef struct line Line;

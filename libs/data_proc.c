@@ -29,7 +29,7 @@ GraphConnection** get_graph_from_connections(const Connection connections[], int
   return out;
 }
 
-PartialStation** get_stations_map_from_stations(const Station stations[], int num_stations, int station_arr_length, int max_name_length) {
+PartialStation** get_stations_map_from_stations(const Station stations[], int num_stations, int station_arr_length, size_t max_name_length) {
   PartialStation** out = malloc(station_arr_length * sizeof(PartialStation*));
   for (int i = 0; i < station_arr_length; i++) {
     out[i] = malloc(sizeof(PartialStation));
@@ -44,7 +44,7 @@ PartialStation** get_stations_map_from_stations(const Station stations[], int nu
   return out;
 }
 
-char** get_line_names_from_lines(const Line lines[], int num_lines, int line_arr_length, int max_name_length) {
+char** get_line_names_from_lines(const Line lines[], int num_lines, int line_arr_length, size_t max_name_length) {
   char **out = malloc(line_arr_length * sizeof(char*));
   for (int i = 0; i < line_arr_length; i++) {
     out[i] = calloc(max_name_length, sizeof(char));

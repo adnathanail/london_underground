@@ -14,7 +14,7 @@ struct path_connection {
 typedef struct path_connection PathConnection;
 
 int get_next_closest_node(const int dist[MAX_STATION_ID], Queue remaining_stations);
-void display_route(int origin, int destination, const int *distances_to_origin, const PathConnection paths[MAX_STATION_ID][MAX_STATION_ID]);
+void display_route(int origin, int destination, const int *distances_to_origin, PathConnection paths[MAX_STATION_ID][MAX_STATION_ID]);
 void dijkstra(int origin, int destination);
 
 GraphConnection** graph;
@@ -105,7 +105,7 @@ int get_next_closest_node(const int dist[MAX_STATION_ID], Queue remaining_statio
   return closest_node;
 }
 
-void display_route(int origin, int destination, const int *distances_to_origin, const PathConnection paths[MAX_STATION_ID][MAX_STATION_ID]) {
+void display_route(int origin, int destination, const int *distances_to_origin, PathConnection paths[MAX_STATION_ID][MAX_STATION_ID]) {
   puts("--------------------");
   printf("%s to %s: %i minutes\n", stations_map[origin]->name, stations_map[destination]->name, distances_to_origin[destination]);
   puts("--------------------");
