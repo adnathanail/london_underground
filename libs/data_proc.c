@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <strings.h>
 #include "data_proc.h"
+#include "utils.h"
 
 
 GraphConnection** get_graph_from_connections(const Connection connections[], int num_connections, int graph_size) {
@@ -34,10 +35,13 @@ PartialStation** get_stations_map_from_stations(const Station stations[], int nu
   for (int i = 0; i < station_arr_length; i++) {
     out[i] = malloc(sizeof(PartialStation));
     out[i]->name = calloc(max_name_length, sizeof(char));
+    out[i]->name_lower = calloc(max_name_length, sizeof(char));
   }
   for (int i = 0; i < num_stations; i++) {
     if (stations[i].id > 0) {
       strcpy(out[stations[i].id]->name, stations[i].name);
+      strcpy(out[stations[i].id]->name_lower, stations[i].name);
+      str_tolower(out[stations[i].id]->name_lower);
       out[stations[i].id]->zone = stations[i].zone;
     }
   }

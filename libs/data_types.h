@@ -21,6 +21,7 @@ typedef struct station Station;
 
 struct partial_station {
   char* name;
+  char* name_lower;
   double zone;
 };
 

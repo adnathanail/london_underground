@@ -7,7 +7,12 @@
 #include <strings.h>
 #include <limits.h>
 #include <errno.h>
+#include <ctype.h>
+
+#include "user_interaction.h"
 #include "data_types.h"
+#include "xterm_codes.h"
+#include "utils.h"
 
 char* read_string(char* prompt) {
   char buffer[MAX_NAME_LENGTH];
@@ -23,9 +28,9 @@ char* read_string(char* prompt) {
 }
 
 int read_int(char* prompt) {
-  int out = -1;
+  int out = INT_MIN;
 
-  while (out == -1) {
+  while (out == INT_MIN) {
     char* input = read_string(prompt);
     char *ptr;
 
@@ -44,13 +49,45 @@ int read_int(char* prompt) {
   return out;
 }
 
-int get_station(char* designation) {  // Designation is things like origin/destination
-  char* prompt = calloc(6 + strlen(designation) + 6 + 13 + 1, sizeof(char));
-  strcpy(prompt, "Enter ");
-  strcat(prompt, designation);
-  strcat(prompt, " station ID: ");
-  int station = read_int(prompt);
-
-  free(prompt);
+int get_station_id(char* designation, PartialStation** stations_map, int station_arr_length) {  // Designation is things like origin/destination
+  printf("%s%s%s\n", XT_UNDL XT_BOLD, designation, XT_RSET);
+  int station = -1;
+  while (station == -1) {
+    int input = read_int("Enter station ID or -1 to search stations: ");
+    if (input == -1) {
+      station_search(stations_map, station_arr_length);
+      continue;
+    } else if (input < 0 || input > (station_arr_length - 1) || strlen(stations_map[input]->name) == 0) {
+      printf("\tError: '%i' is not a valid station ID\n", input);
+      continue;
+    }
+    station = input;
+  }
+  printf("\tSelected: %s (ID %i)\n\n", stations_map[station]->name, station);
   return station;
+}
+
+void station_search(PartialStation** stations_map, int station_arr_length) {
+  char* input;
+  char* input_lower = NULL;
+  while (1) {
+    input = read_string("\tEnter a search term (station name) or -1 to return to station selection: ");
+    if (strcmp(input, "-1") == 0) {
+      break;
+    }
+    if (strcmp(input, "") == 0) {
+      continue;
+    }
+    printf("\tStations matching '%s':\n", input);
+    input_lower = calloc(strlen(input) + 1, sizeof(char));
+    strcpy(input_lower, input);
+    str_tolower(input_lower);
+    for (int i = 0; i < station_arr_length; i++) {
+      if(strstr(stations_map[i]->name_lower, input_lower) != NULL) {
+        printf("\t\tID %i\t%s\n", i, stations_map[i]->name);
+      }
+    }
+    free(input);
+    free(input_lower);
+  }
 }
