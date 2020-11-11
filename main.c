@@ -135,6 +135,6 @@ void display_route(int origin, int destination, const int *distances_to_origin, 
     j++;
   }
   puts("--------------------");
-  printf("Zones %.1f to %.1f\n", min_zone, max_zone);
+  printf("Zones %.1f to %.1f\n", min_zone, max_zone);  // Some zones are floats
   printf("%i changes\n", num_changes);
 }

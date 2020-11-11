@@ -73,18 +73,20 @@ void station_search(PartialStation** stations_map, int station_arr_length) {
   while (1) {
     input = read_string("\tEnter a search term (station name) or -1 to return to station selection: ");
     if (strcmp(input, "-1") == 0) {
+      free(input);
       break;
     }
     if (strcmp(input, "") == 0) {
+      free(input);
       continue;
     }
-    printf("\tStations matching '%s':\n", input);
+    printf("\t\tStations matching '%s':\n", input);
     input_lower = calloc(strlen(input) + 1, sizeof(char));
     strcpy(input_lower, input);
     str_tolower(input_lower);
     for (int i = 0; i < station_arr_length; i++) {
       if(strstr(stations_map[i]->name_lower, input_lower) != NULL) {
-        printf("\t\tID %i\t%s\n", i, stations_map[i]->name);
+        printf("\t\t\tID %i\t%s\n", i, stations_map[i]->name);
       }
     }
     free(input);
