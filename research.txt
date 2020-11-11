@@ -7,9 +7,3 @@ https://www.google.com/maps/dir/St+Pancras+International,+Euston+Road,+London/Fu
 http://content.tfl.gov.uk/large-print-tube-map.pdf
 https://www.geeksforgeeks.org/dijkstras-shortest-path-algorithm-greedy-algo-7/
 https://github.com/nicola/tubemaps
-
-- colour in terminal
-- Walking time at stations
-
-- Valgrind
-- Pycharm issues

@@ -36,8 +36,6 @@ int main() {
 }
 
 void dijkstra(int origin, int destination) {
-  // Dijkstra implementation based off https://brilliant.org/wiki/dijkstras-short-path-finder/
-
   int distances_to_origin[MAX_STATION_ID];
   for (int i = 0; i < MAX_STATION_ID; i++) {
     distances_to_origin[i] = INT_MAX;
@@ -106,7 +104,7 @@ int get_next_closest_node(const int dist[MAX_STATION_ID], Queue remaining_statio
 }
 
 void display_route(int origin, int destination, const int *distances_to_origin, PathConnection paths[MAX_STATION_ID][MAX_STATION_ID]) {
-  printf("%s to %s: %i minutes\n", stations_map[origin]->name, stations_map[destination]->name, distances_to_origin[destination]);
+  printf("%s to %s\n", stations_map[origin]->name, stations_map[destination]->name);
   puts("--------------------");
   int j = 0;
   int current_line = -1;
@@ -135,6 +133,7 @@ void display_route(int origin, int destination, const int *distances_to_origin, 
     j++;
   }
   puts("--------------------");
+  printf("%i minutes\n", distances_to_origin[destination]);
   printf("Zones %.1f to %.1f\n", min_zone, max_zone);  // Some zones are floats
   printf("%i changes\n", num_changes);
 }
