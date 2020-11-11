@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <limits.h>
 
-#include "data/data.h"
-#include "libs/data_proc.h"
-#include "libs/data_structures.h"
-#include "libs/user_interaction.h"
+#include "../data/data.h"
+#include "data_proc.h"
+#include "data_structures.h"
+#include "user_interaction.h"
 
 struct path_connection {
   int station_id;

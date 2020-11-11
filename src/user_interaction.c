@@ -7,10 +7,8 @@
 #include <strings.h>
 #include <limits.h>
 #include <errno.h>
-#include <ctype.h>
 
 #include "user_interaction.h"
-#include "data_types.h"
 #include "xterm_codes.h"
 #include "utils.h"
 
